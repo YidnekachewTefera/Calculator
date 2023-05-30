@@ -10,6 +10,7 @@ const operators = document.querySelectorAll("[data-operator]");
 const operationScreen = document.querySelector(
   ".current-operands-and-operator"
 );
+const result = document.querySelector(".result");
 const clear = document.querySelector(".reset");
 const deletee = document.querySelector(".delete");
 clear.addEventListener("click", () => {
@@ -26,7 +27,7 @@ const screen1 = (value) => {
     operationScreen.textContent = "";
   }
   operationScreen.textContent += value;
-  //the following line of code is used for controlling the operation values written on the operation screen
+  //the following line of code is used for controlling the operation types that needs to be performed written on the operation screen
   if (
     value == "+" ||
     value == "-" ||
@@ -56,22 +57,40 @@ const screen1 = (value) => {
   ) {
     operationScreen.textContent = 0;
   }
-  if (value == "-" || value == "+" || value == "X" || value == "/") {
+  if (
+    value == "-" ||
+    value == "+" ||
+    value == "X" ||
+    value == "/" ||
+    value == "="
+  ) {
     if (prevScreenValue != 0) {
-      prevScreenValue1 = operationScreen.textContent.slice(
-        prevScreenValue.toString().length + 1,
-        -1
+      prevScreenValue1 = parseInt(
+        operationScreen.textContent.slice(
+          prevScreenValue.toString().length + 1,
+          -1
+        )
       );
+      console.log(prevScreenValue1);
     } else {
       prevScreenValue = parseInt(operationScreen.textContent.slice(0, -1));
       operationType = value;
     }
   }
   if (value == "=") {
-    operate(value, prevScreenValue, prevScreenValue1);
+    operate(operationType, prevScreenValue, prevScreenValue1);
+    console.log(operate(operationType, prevScreenValue, prevScreenValue1));
+    result.textContent = operate(
+      operationType,
+      prevScreenValue,
+      prevScreenValue1
+    );
   }
 };
 const operate = (type, a, b) => {
+  console.log(type);
+  console.log(a);
+  console.log(b);
   switch (type) {
     case "+":
       console.log(a + b);
@@ -80,7 +99,7 @@ const operate = (type, a, b) => {
     case "-":
       return a - b;
       break;
-    case "*":
+    case "X":
       return a * b;
       break;
     case "/":
