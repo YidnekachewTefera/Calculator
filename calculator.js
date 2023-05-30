@@ -1,7 +1,9 @@
 let prevScreenValue = 0;
-let preScreenVValue1 = 0;
+let prevScreenValue1 = 0;
 let currentScreenValue = 0;
 let operationType;
+let prevOperation;
+let prevOperation1;
 let lastOperationType = "=";
 const numbers = document.querySelectorAll("[data-number]");
 const operators = document.querySelectorAll("[data-operator]");
@@ -45,8 +47,6 @@ const screen1 = (value) => {
       operationScreen.textContent = str;
       operationScreen.textContent += value;
     }
-
-    operationType = value;
   }
   if (
     operationScreen.textContent == "X" ||
@@ -56,8 +56,36 @@ const screen1 = (value) => {
   ) {
     operationScreen.textContent = 0;
   }
-
+  if (value == "-" || value == "+" || value == "X" || value == "/") {
+    if (prevScreenValue != 0) {
+      prevScreenValue1 = operationScreen.textContent.slice(
+        prevScreenValue.toString().length + 1,
+        -1
+      );
+    } else {
+      prevScreenValue = parseInt(operationScreen.textContent.slice(0, -1));
+      operationType = value;
+    }
+  }
   if (value == "=") {
+    operate(value, prevScreenValue, prevScreenValue1);
+  }
+};
+const operate = (type, a, b) => {
+  switch (type) {
+    case "+":
+      console.log(a + b);
+      return a + b;
+      break;
+    case "-":
+      return a - b;
+      break;
+    case "*":
+      return a * b;
+      break;
+    case "/":
+      return a / b;
+      break;
   }
 };
 numbers.forEach((number) => {
@@ -70,4 +98,3 @@ operators.forEach((operator) => {
     screen1(operator.textContent);
   });
 });
-console.log();
